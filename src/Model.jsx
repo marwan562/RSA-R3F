@@ -11,19 +11,21 @@ const Model = () => {
   );
   const { actions, clips } = useAnimations(animations, scene);
   const scroll = useScroll();
-  const audio = new Audio("/audio/i-miss-the-rage-wav-194890.mp3")
+  const audio = new Audio("/audio/i-miss-the-rage-wav-194890.mp3");
 
   useEffect(() => {
     if (actions["Experiment"]) {
       actions["Experiment"].play();
-      audio.play()
+      audio.play();
     }
   }, []);
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
+    group.current["rotation"].y = Math.cos(clock.getElapsedTime() * 0.5);
+    group.current["rotation"].z = Math.cos(clock.getElapsedTime() * 0.5);
     if (actions["Experiment"]) {
       actions["Experiment"].time =
-        (actions["Experiment"].getClip().duration * scroll.offset);
+        actions["Experiment"].getClip().duration * scroll.offset;
     }
   });
 
